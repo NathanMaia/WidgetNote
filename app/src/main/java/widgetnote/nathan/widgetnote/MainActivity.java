@@ -51,6 +51,7 @@ public final class MainActivity extends AppCompatActivity {
                 id++;
                 textInput.dismiss();
                 listaAdapter.notifyDataSetChanged();
+                saveListState(listTemp);
                 Toast.makeText(getApplicationContext(), listTemp.get(id - 1), Toast.LENGTH_SHORT).show();
             }
         }
@@ -93,12 +94,6 @@ public final class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         listTemp.addAll(restoreListState());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveListState(listTemp);
     }
 
     //Função que recebe o array de strings da função EditTextExtractor() e o salva em um arquivo
