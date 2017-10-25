@@ -40,7 +40,6 @@ public final class MainActivity extends AppCompatActivity {
     private PopupWindow textInput;
     private Button addButton;
     private EditText input;
-    private int id = 0;
     private View.OnClickListener add_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
             if (input.getText().toString().isEmpty()) {
@@ -48,11 +47,10 @@ public final class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Text field empty.Try again.", Toast.LENGTH_SHORT).show();
             } else {
                 listTemp.add(input.getText().toString());
-                id++;
+
                 textInput.dismiss();
                 listaAdapter.notifyDataSetChanged();
                 saveListState(listTemp);
-                Toast.makeText(getApplicationContext(), listTemp.get(id - 1), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -66,12 +64,12 @@ public final class MainActivity extends AppCompatActivity {
         lista = (ListView) findViewById(R.id.lista);
         listaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listTemp);
         lista.setAdapter(listaAdapter);
-        lista.setOnItemClickListener(new ListView.OnItemClickListener() {
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final int itemPosition = position;
-                PopupMenu itemMenu = new PopupMenu(getApplicationContext(), view);
-                itemMenu.inflate(R.menu.item_menu);
+                PopupMenu itemMenu = new PopupMenu(MainActivity.this, view);
+                itemMenu.getMenuInflater().inflate(R.menu.item_menu, itemMenu.getMenu());
                 itemMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -86,6 +84,7 @@ public final class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+                itemMenu.show();
             }
         });
     }
@@ -175,7 +174,6 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     public void clearList() {
-        id = 0;
         listTemp.clear();
         saveListState(listTemp);
         listaAdapter.notifyDataSetChanged();
