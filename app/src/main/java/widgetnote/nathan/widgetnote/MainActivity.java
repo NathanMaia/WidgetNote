@@ -1,6 +1,5 @@
 package widgetnote.nathan.widgetnote;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -8,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +38,7 @@ public final class MainActivity extends AppCompatActivity {
     private PopupWindow textInput;
     private Button addButton;
     private EditText input;
+    private int idAux = 0;
     private View.OnClickListener add_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
             if (input.getText().toString().isEmpty()) {
@@ -47,13 +46,34 @@ public final class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Text field empty.Try again.", Toast.LENGTH_SHORT).show();
             } else {
                 listTemp.add(input.getText().toString());
-
                 textInput.dismiss();
                 listaAdapter.notifyDataSetChanged();
                 saveListState(listTemp);
             }
         }
     };
+    private View.OnClickListener editPopup_button_listener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (input.getText().toString().isEmpty()) {
+                textInput.dismiss();
+                Toast.makeText(getApplicationContext(), "No changes detected.", Toast.LENGTH_SHORT).show();
+            } else {
+                listTemp.remove(getIdAux());
+                listTemp.add(getIdAux(), input.getText().toString());
+                textInput.dismiss();
+                listaAdapter.notifyDataSetChanged();
+                saveListState(listTemp);
+            }
+        }
+    };
+
+    public int getIdAux() {
+        return idAux;
+    }
+
+    public void setIdAux(int idAux) {
+        this.idAux = idAux;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +87,8 @@ public final class MainActivity extends AppCompatActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int itemPosition = position;
+                setIdAux(position);
+                final String content = listaAdapter.getItem(position);
                 PopupMenu itemMenu = new PopupMenu(MainActivity.this, view);
                 itemMenu.getMenuInflater().inflate(R.menu.item_menu, itemMenu.getMenu());
                 itemMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -75,11 +96,11 @@ public final class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         int id = item.getItemId();
                         if (id == R.id.delete_option) {
-                            listaAdapter.remove(listaAdapter.getItem(itemPosition));
+                            listaAdapter.remove(listaAdapter.getItem(getIdAux()));
                             listaAdapter.notifyDataSetChanged();
                         }
                         if (id == R.id.edit_option) {
-                            //in development
+                            initiatePopupWindowItemEdit(content);
                         }
                         return true;
                     }
@@ -119,24 +140,39 @@ public final class MainActivity extends AppCompatActivity {
     //Cria popup de criação de anotação
     private void initiatePopupWindow() {
         try {
-
-            //We need to get the instance of the LayoutInflater, use the context of this activity
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Inflate the view from a predefined XML layout
-            View layout = inflater.inflate(R.layout.text_input,
+            View layout = getLayoutInflater().inflate(R.layout.text_input,
                     (ViewGroup) findViewById(R.id.textinput_container_layout));
             // create a 450px width and dynamic height PopupWindow
             textInput = new PopupWindow(layout, 450, WRAP_CONTENT, true);
             // display the popup in the center
             textInput.showAtLocation(layout, Gravity.CENTER, 0, 0);
-
             input = (EditText) layout.findViewById(R.id.text_input);
             input.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             input.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
             addButton = (Button) layout.findViewById(R.id.add_text_button);
             addButton.setOnClickListener(add_button_click_listener);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initiatePopupWindowItemEdit(String content) {
+        try {
+            //Inflate the view from a predefined XML layout
+            View layout = getLayoutInflater().inflate(R.layout.text_input,
+                    (ViewGroup) findViewById(R.id.textinput_container_layout));
+            // create a 450px width and dynamic height PopupWindow
+            textInput = new PopupWindow(layout, 450, WRAP_CONTENT, true);
+            // display the popup in the center
+            textInput.showAtLocation(layout, Gravity.CENTER, 0, 0);
+            input = (EditText) layout.findViewById(R.id.text_input);
+            input.setHint(content);
+            input.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            input.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            addButton = (Button) layout.findViewById(R.id.add_text_button);
+            addButton.setOnClickListener(editPopup_button_listener);
         } catch (Exception e) {
             e.printStackTrace();
         }
