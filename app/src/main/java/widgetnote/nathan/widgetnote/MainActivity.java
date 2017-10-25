@@ -148,6 +148,7 @@ public final class MainActivity extends AppCompatActivity {
             // display the popup in the center
             textInput.showAtLocation(layout, Gravity.CENTER, 0, 0);
             input = (EditText) layout.findViewById(R.id.text_input);
+            input.setHint(R.string.input_hint);
             input.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             input.setImeOptions(EditorInfo.IME_ACTION_DONE);
             addButton = (Button) layout.findViewById(R.id.add_text_button);
@@ -168,7 +169,8 @@ public final class MainActivity extends AppCompatActivity {
             // display the popup in the center
             textInput.showAtLocation(layout, Gravity.CENTER, 0, 0);
             input = (EditText) layout.findViewById(R.id.text_input);
-            input.setHint(content);
+            //input.setHint(content);
+            input.setText(content);
             input.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             input.setImeOptions(EditorInfo.IME_ACTION_DONE);
             addButton = (Button) layout.findViewById(R.id.add_text_button);
