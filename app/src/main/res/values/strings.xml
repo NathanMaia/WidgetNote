@@ -4,4 +4,6 @@
     <string name="clean">Clean list</string>
     <string name="input_hint">Add an annotation</string>
     <string name="popup_button">Add</string>
+    <string name="edit_warning">No changes detected.</string>
+    <string name="empty_field_warning">Text field empty.Try again.</string>
 </resources>

@@ -43,7 +43,7 @@ public final class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (input.getText().toString().isEmpty()) {
                 textInput.dismiss();
-                Toast.makeText(getApplicationContext(), "Text field empty.Try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.empty_field_warning, Toast.LENGTH_SHORT).show();
             } else {
                 listTemp.add(input.getText().toString());
                 textInput.dismiss();
@@ -56,7 +56,7 @@ public final class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (input.getText().toString().isEmpty()) {
                 textInput.dismiss();
-                Toast.makeText(getApplicationContext(), "No changes detected.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.edit_warning, Toast.LENGTH_SHORT).show();
             } else {
                 listTemp.remove(getIdAux());
                 listTemp.add(getIdAux(), input.getText().toString());
