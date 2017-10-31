@@ -97,6 +97,8 @@ public final class MainActivity extends AppCompatActivity {
                         int id = item.getItemId();
                         if (id == R.id.delete_option) {
                             listaAdapter.remove(listaAdapter.getItem(getIdAux()));
+                            //listTemp.remove(listTemp.remove(getIdAux()));
+                            saveListState(listTemp);
                             listaAdapter.notifyDataSetChanged();
                         }
                         if (id == R.id.edit_option) {
