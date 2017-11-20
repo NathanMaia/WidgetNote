@@ -39,6 +39,8 @@ public final class MainActivity extends AppCompatActivity {
     private Button addButton;
     private EditText input;
     private int idAux = 0;
+
+
     private View.OnClickListener add_button_click_listener = new View.OnClickListener() {
         public void onClick(View v) {
             if (input.getText().toString().isEmpty()) {
@@ -110,6 +112,7 @@ public final class MainActivity extends AppCompatActivity {
                 itemMenu.show();
             }
         });
+
     }
 
     @Override
@@ -245,6 +248,8 @@ public final class MainActivity extends AppCompatActivity {
         }
         //Limpa a lista de itens
         if (id == R.id.clean_list) {
+
+
             this.clearList();
         }
         return super.onOptionsItemSelected(item);

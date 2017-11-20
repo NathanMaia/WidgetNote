@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/textinput_container_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="370dp"
+    android:layout_height="200dp"
+    android:animateLayoutChanges="true"
     android:background="@android:drawable/dialog_holo_light_frame"
     android:orientation="vertical"
+    android:paddingEnd="13dp"
+    android:paddingStart="13dp"
     android:weightSum="1">
 
     <EditText
@@ -14,7 +17,8 @@
         android:layout_marginBottom="15dp"
         android:layout_marginTop="11dp"
         android:hint="@string/input_hint"
-        android:maxLines="60" />
+        android:maxLines="60"
+        android:paddingStart="6dp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -24,7 +28,7 @@
 
         <Button
             android:id="@+id/add_text_button"
-            android:layout_width="wrap_content"
+            android:layout_width="143dp"
             android:layout_height="48dp"
             android:drawablePadding="3sp"
             android:text="@string/popup_button" />
