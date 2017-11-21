@@ -1,6 +1,8 @@
 package widgetnote.nathan.widgetnote;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
@@ -216,12 +218,6 @@ public final class MainActivity extends AppCompatActivity {
         return recovery;
     }
 
-    public void clearList() {
-        listTemp.clear();
-        saveListState(listTemp);
-        listaAdapter.notifyDataSetChanged();
-    }
-
     //Função que define a ação do botão de adição de item na lista (ImageButton)
     public void onClick(View view) {
         this.initiatePopupWindow();
@@ -249,8 +245,16 @@ public final class MainActivity extends AppCompatActivity {
         //Limpa a lista de itens
         if (id == R.id.clean_list) {
 
+            new AlertDialog.Builder(this).setMessage("Are you sure?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-            this.clearList();
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    Toast.makeText(MainActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
+                    listTemp.clear();
+                    saveListState(listTemp);
+                    listaAdapter.notifyDataSetChanged();
+                }
+            })
+                    .setNegativeButton(android.R.string.no, null).show();
         }
         return super.onOptionsItemSelected(item);
     }
