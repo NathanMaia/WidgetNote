@@ -1,5 +1,7 @@
 package widgetnote.nathan.widgetnote;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -58,7 +60,7 @@ public final class MainActivity extends AppCompatActivity {
     };
     private View.OnClickListener editPopup_button_listener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (input.getText().toString().isEmpty()) {
+            if (input.getText().toString().isEmpty() || input.getText().toString().matches(input.getText().toString())) {
                 textInput.dismiss();
                 Toast.makeText(getApplicationContext(), R.string.edit_warning, Toast.LENGTH_SHORT).show();
             } else {
@@ -93,7 +95,7 @@ public final class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setIdAux(position);
                 final String content = listaAdapter.getItem(position);
-                PopupMenu itemMenu = new PopupMenu(MainActivity.this, view);
+                final PopupMenu itemMenu = new PopupMenu(MainActivity.this, view);
                 itemMenu.getMenuInflater().inflate(R.menu.item_menu, itemMenu.getMenu());
                 itemMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -101,12 +103,21 @@ public final class MainActivity extends AppCompatActivity {
                         int id = item.getItemId();
                         if (id == R.id.delete_option) {
                             listaAdapter.remove(listaAdapter.getItem(getIdAux()));
-                            //listTemp.remove(listTemp.remove(getIdAux()));
                             saveListState(listTemp);
                             listaAdapter.notifyDataSetChanged();
                         }
                         if (id == R.id.edit_option) {
                             initiatePopupWindowItemEdit(content);
+                        }
+                        if (id == R.id.copy) {
+                            ClipboardManager cbmanager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipData cbdata = ClipData.newPlainText("Item" + getIdAux(), content);
+                            if (cbmanager != null) {
+                                cbmanager.setPrimaryClip(cbdata);
+                            }
+                            if (cbmanager != null && cbmanager.getPrimaryClip().getItemAt(0).getText() != "") {
+                                Toast.makeText(getApplicationContext(), "Item successfuly copied to clipboard!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         return true;
                     }
@@ -177,6 +188,7 @@ public final class MainActivity extends AppCompatActivity {
 
     private void initiatePopupWindowItemEdit(String content) {
         try {
+
             //Inflate the view from a predefined XML layout
             View layout = getLayoutInflater().inflate(R.layout.text_input,
                     (ViewGroup) findViewById(R.id.textinput_container_layout));
