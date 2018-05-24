@@ -83,9 +83,9 @@ public final class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        lista = (ListView) findViewById(R.id.lista);
+        lista = findViewById(R.id.lista);
         listaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listTemp);
         lista.setAdapter(listaAdapter);
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,6 +121,15 @@ public final class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         listTemp.addAll(restoreListState());
+        listaAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lista.removeAllViewsInLayout();
+        listTemp.clear();
+        listaAdapter.notifyDataSetChanged();
     }
 
     //Função que recebe o array de strings da função EditTextExtractor() e o salva em um arquivo
@@ -154,11 +163,11 @@ public final class MainActivity extends AppCompatActivity {
             textInput = new PopupWindow(layout, 450, WRAP_CONTENT, true);
             // display the popup in the center
             textInput.showAtLocation(layout, Gravity.CENTER, 0, 0);
-            input = (EditText) layout.findViewById(R.id.text_input);
+            input = layout.findViewById(R.id.text_input);
             input.setHint(R.string.input_hint);
             input.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             input.setImeOptions(EditorInfo.IME_ACTION_DONE);
-            addButton = (Button) layout.findViewById(R.id.add_text_button);
+            addButton = layout.findViewById(R.id.add_text_button);
             addButton.setOnClickListener(add_button_click_listener);
 
         } catch (Exception e) {
@@ -175,12 +184,12 @@ public final class MainActivity extends AppCompatActivity {
             textInput = new PopupWindow(layout, 450, WRAP_CONTENT, true);
             // display the popup in the center
             textInput.showAtLocation(layout, Gravity.CENTER, 0, 0);
-            input = (EditText) layout.findViewById(R.id.text_input);
+            input = layout.findViewById(R.id.text_input);
             //input.setHint(content);
             input.setText(content);
             input.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             input.setImeOptions(EditorInfo.IME_ACTION_DONE);
-            addButton = (Button) layout.findViewById(R.id.add_text_button);
+            addButton = layout.findViewById(R.id.add_text_button);
             addButton.setOnClickListener(editPopup_button_listener);
         } catch (Exception e) {
             e.printStackTrace();
