@@ -1,13 +1,11 @@
 package widgetnote.nathan.widgetnote;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,8 +19,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,7 +35,7 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public final class MainActivity extends AppCompatActivity {
+public final class MainActivity extends Activity {
     private ArrayList<String> listTemp = new ArrayList<>();
     private ArrayAdapter<String> listaAdapter;
     private ListView lista;
@@ -86,7 +86,7 @@ public final class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setActionBar(toolbar);
         lista = findViewById(R.id.lista);
         listaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listTemp);
         lista.setAdapter(listaAdapter);
